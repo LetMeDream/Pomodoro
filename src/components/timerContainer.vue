@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <button @click='startCount' class="button is-medium myBtn">
+        <button @click='startCount' class="button is-rounded is-medium myBtn">
             <p v-if='counting && (count!=refCount)'>Stop</p>
             <p v-else-if='count!=refCount'>Continue</p>
             <p v-else>Start</p>
