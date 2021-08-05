@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <button @click='startCount' class="button is-rounded is-dark is-medium myBtn">
+        <button @click='startCount' id='firstBtn' class="button is-rounded is-dark is-medium myBtn">
             <p v-if='counting && (count!=refCount)'>Stop</p>
             <p v-else-if='count!=refCount'>Continue</p>
             <p v-else>Start</p>
@@ -64,6 +64,20 @@ export default {
         }
 
     },
+    watch:{
+        done:function(){
+            setTimeout(() => {
+                let mybtn = document.getElementById('firstBtn');
+                console.log(mybtn);
+                mybtn.classList.remove('is-loading');
+                /* Let's here finish doing all the reseting such as...  */
+                /* mybtn.innerHTML = 'Start'; */
+                this.done = false;
+                location.reload();
+
+            }, 3500);
+        }
+    },
     methods: {
         /* Here we receive Count (25, 5 or 15 mins) from Child component */
         currentCount(newCount){
@@ -98,11 +112,18 @@ export default {
                             if(this.count === 0){
                                 this.done=true;
                                 this.interrupting=false;
-                                mybtn.innerHTML = 'All done!';
-                                setInterval(()=>{
-                                    mybtn.innerHTML = 'Reset.';
+                                mybtn.innerHTML ="Let's count that one in.";
+                                setTimeout(() => {
+                                    mybtn.innerHTML  += '.';
+                                }, 750);
+                                setTimeout(() => {
+                                    mybtn.innerHTML  += '.';
+                                }, 1500);
+                                setTimeout(()=>{
                                     /* Reseting */
                                     this.counting = false;
+                                    this.count = this.refCount;
+                                    mybtn.classList.add('is-loading');
                                     /* Countdown is done */
                                 }, 2000);
                                 clearInterval(xx);

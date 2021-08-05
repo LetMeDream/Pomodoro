@@ -43,7 +43,7 @@ export default {
                         break;
                     case 'Short Break':
                         this.currentColor('#3F72AF');
-                        this.currentCount(1);
+                        this.currentCount(2);
                         break;
                     case 'Long Break':
                         this.currentColor('#878ECD');
@@ -73,7 +73,7 @@ export default {
                             break;
                         case 'Short Break':
                             this.currentColor('#3F72AF');
-                            this.currentCount(1);
+                            this.currentCount(2);
                             break;
                         case 'Long Break':
                             this.currentColor('#878ECD');
