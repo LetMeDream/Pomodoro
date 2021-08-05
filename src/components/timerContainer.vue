@@ -10,11 +10,13 @@
             </div>
         </div>
 
-        <button @click='startCount' class="button is-rounded is-medium myBtn">
+        <button @click='startCount' class="button is-rounded is-dark is-medium myBtn">
             <p v-if='counting && (count!=refCount)'>Stop</p>
             <p v-else-if='count!=refCount'>Continue</p>
             <p v-else>Start</p>
         </button>
+
+
 
 
     </div>
@@ -111,9 +113,12 @@ export default {
 <style scoped>
 
     .container-mine{
-        background-color: rgba(255, 255, 255, 0.489);
+        -webkit-box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+        background-color:rgba(208, 208, 208, 0.645);
         border-radius:8px;
-        height: 210px;
+        /* height: 210px; */
         /* height: 30px; */
         min-width: 25vw;
         max-width: 50vw;
@@ -133,9 +138,10 @@ export default {
         font-family:'Desconsolata';
     }
     .myBtn{
+        margin-bottom: 12px;
         min-width:108px;
         box-shadow: none;
-        transition: 0.5s all ease-in;
+        transition: 0.1s all ease-in;
     }
     .myBtn:focus{
         box-shadow: none;
@@ -145,7 +151,7 @@ export default {
         box-shadow: none;
     }
     .myBtnClicked{
-        transform: translateY(2px) translateX(2px);
+       transform: translateY(2px)
     }
     .finished{
         color:green;

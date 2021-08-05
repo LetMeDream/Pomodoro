@@ -29,10 +29,11 @@ export default {
   padding: 0;
   box-sizing: border-box;
   font-family: 'Staatliches';
+  text-shadow: 1px 1px black;
 }
 body{
   transition: 1s ease all;
-  background:hsl(3, 77%, 60%);
+  background:#3A4750;
 }
 
 #app {

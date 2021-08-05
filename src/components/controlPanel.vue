@@ -38,15 +38,15 @@ export default {
                 let currentTab = e.target.innerHTML;
                 switch (currentTab) {
                     case 'Pomodoro':
-                        this.currentColor('hsl(3, 77%, 60%)');
+                        this.currentColor('#3A4750');
                         this.currentCount(1500);
                         break;
                     case 'Short Break':
-                        this.currentColor('hsl(182, 35%, 42%)');
-                        this.currentCount(300);
+                        this.currentColor('#3F72AF');
+                        this.currentCount(1);
                         break;
                     case 'Long Break':
-                        this.currentColor('hsl(205, 43%, 46%)');
+                        this.currentColor('#878ECD');
                         this.currentCount(900);
                         break;
                     default:
@@ -68,15 +68,15 @@ export default {
                     let currentTab = e.target.innerHTML;
                     switch (currentTab) {
                         case 'Pomodoro':
-                            this.currentColor('hsl(3, 77%, 60%)');
+                            this.currentColor('#3A4750');
                             this.currentCount(1500);
                             break;
                         case 'Short Break':
-                            this.currentColor('hsl(182, 35%, 42%)');
-                            this.currentCount(300);
+                            this.currentColor('#3F72AF');
+                            this.currentCount(1);
                             break;
                         case 'Long Break':
-                            this.currentColor('hsl(205, 43%, 46%)');
+                            this.currentColor('#878ECD');
                             this.currentCount(900);
                             break;
                         default:
