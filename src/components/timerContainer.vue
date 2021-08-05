@@ -53,6 +53,14 @@ export default {
         },
         seconds:function(){
             return Math.floor((this.count)%60)
+        },
+        colorButton:function(){
+            if(!this.interrupting){
+                if(this.count=='1'){
+                    return 2;
+                }
+            }
+            return 1;
         }
 
     },
@@ -71,7 +79,7 @@ export default {
             this.interrupting = true;
             let mybtn = document.querySelector('.myBtn');
             mybtn.classList.toggle('myBtnClicked')
-            this.counting = !this.counting;
+            !this.done ? this.counting = !this.counting : this.counting = true ;
 
             /* Do we need a reset maybe? */
             if(this.done){
@@ -81,27 +89,26 @@ export default {
 
             if(this.count>0){
                     let xx = setInterval(()=>
-                    {
-                        if(this.counting &&  this.count>0 && this.interrupting){
-                            this.count=this.count-1;
-                        }else{
-                            clearInterval(xx);
+                        {
+                            if(this.counting &&  this.count>0 && this.interrupting){
+                                this.count=this.count-1;
+                            }else{
+                                clearInterval(xx);
+                            }
+                            if(this.count === 0){
+                                this.done=true;
+                                this.interrupting=false;
+                                mybtn.innerHTML = 'All done!';
+                                setInterval(()=>{
+                                    mybtn.innerHTML = 'Reset.';
+                                    /* Reseting */
+                                    this.counting = false;
+                                    /* Countdown is done */
+                                }, 2000);
+                                clearInterval(xx);
+                            }
                         }
-                        if(this.count === 0){
-                            mybtn.classList.add('finished');
-                            this.done=true;
-                            this.interrupting=false;
-                            mybtn.innerHTML = 'All done!';
-                            let interval = setInterval(()=>{
-                                mybtn.innerHTML = 'Reset.';
-                                /* Reseting */
-                                this.counting = !this.counting;
-                                mybtn.classList.remove('finished');
-                                /* Countdown is done */
-                            }, 2000);
-                            clearInterval(interval);
-                        }
-                    } , 1000);
+                    , 1000);
             }
 
         }
@@ -111,6 +118,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+    .stop{
+        background-color:#BD4B4B;
+    }
+    .stop:hover,
+    .stop:focus{
+        background-color:#974848;
+    }
 
     .container-mine{
         -webkit-box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
