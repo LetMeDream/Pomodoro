@@ -1,5 +1,9 @@
 <template>
     <p class="panel-tabs">
+        <audio id='thisAudio' autoplay>
+            <source src="../assets/done.mp3" type="audio/mpeg">
+            <!-- Your browser does not support the audio element. -->
+        </audio>
         <a v-on:click='change' class="is-active">Pomodoro
                     <span id='first-tag' class='tag'>0</span>
         </a>
@@ -16,7 +20,6 @@
 </template>
 
 <script>
-
 
 export default {
     name: 'controlPanel',
@@ -37,6 +40,11 @@ export default {
 
     },
     methods:{
+        play() {
+            let audio = document.getElementById('thisAudio');
+            audio.play();
+            }
+        ,
         updateTag(){
             let object = localStorage.getItem('pomodoroOfMine') ? JSON.parse(localStorage.getItem('pomodoroOfMine')).pomodoros : this.pomodoros;
             /* console.log(object); */ // Why the fuck does this output 'observer'?
@@ -59,6 +67,7 @@ export default {
         change(e){
             /* Here I think we should do the 'interrupting' check
             ** If not interrupting... */
+           this.play();
             if(!this.interrupting){
                 /* Reseting selection before selecting new one */
                 let as = document.querySelectorAll('p.panel-tabs > a');
