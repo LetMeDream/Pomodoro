@@ -139,6 +139,14 @@ export default {
         }
     },
     methods: {
+        alarm(){
+            let audio = document.getElementById('thisAudio');
+            audio.play();
+        },
+        clicked(){
+            let audio = document.getElementById('thisOtherAudio');
+            audio.play();
+        },
         /* Here we receive Count (25, 5 or 15 mins) from Child component */
         currentCount(newCount){
             this.refCount = newCount;
@@ -150,6 +158,7 @@ export default {
         },
         /* Pretty obviously, here we start the count(down) */
         startCount(){
+            this.clicked();
             this.interrupting = true;
             let mybtn = document.querySelector('.myBtn');
             mybtn.classList.toggle('myBtnClicked')
@@ -170,6 +179,7 @@ export default {
                                 clearInterval(xx);
                             }
                             if(this.count === 0){
+                                this.alarm();
                                 this.done=true;
                                 this.interrupting=false;
                                 console.log(mybtn.children[0].children[0]);
