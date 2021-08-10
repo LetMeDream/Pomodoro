@@ -11,9 +11,14 @@
         </div>
 
         <button @click='startCount' id='firstBtn' class="button is-rounded is-dark is-medium myBtn">
-            <p v-if='counting && (count!=refCount)'>Stop</p>
-            <p v-else-if='count!=refCount'>Continue</p>
-            <p v-else>Start</p>
+            <div v-if='!done' class="aint-done">
+                <p v-if='counting && (count!=refCount)'>Stop</p>
+                <p v-else-if='count!=refCount'>Continue</p>
+                <p v-else>Start</p>
+            </div>
+            <div v-else class="aint-done">
+                <p>Let's count that one in.</p>
+            </div>
         </button>
 
 
@@ -68,12 +73,67 @@ export default {
         done:function(){
             setTimeout(() => {
                 let mybtn = document.getElementById('firstBtn');
-                console.log(mybtn);
                 mybtn.classList.remove('is-loading');
                 /* Let's here finish doing all the reseting such as...  */
-                /* mybtn.innerHTML = 'Start'; */
-                this.done = false;
-                location.reload();
+                /* console.log(mybtn);
+                console.log(mybtn.children); */
+
+                this.done = true;
+                /* Let's have localStorage save our asses here */
+                /* If localStorage[''] doesn't have our object */
+                if(!localStorage.getItem('pomodoroOfMine')){
+                    console.log('lets then create it');
+                    let object = JSON.stringify({
+                            app: 'Vue 3',
+                            pomodoros: {
+                                completed: 0,
+                                shortBreaks: 0,
+                                longBreaks: 0
+                            }
+                        });
+                    localStorage.setItem('pomodoroOfMine', object);
+                    let pomodorosOfMine = JSON.parse(localStorage.getItem('pomodoroOfMine'));
+                    console.log(pomodorosOfMine);
+                    switch (this.refCount) {
+                        case 2:
+                            pomodorosOfMine.pomodoros.shortBreaks+=1;
+                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                            break;
+                        case 900:
+                            pomodorosOfMine.pomodoros.longBreaks+=1;
+                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                            break;
+                        case 1500:
+                            pomodorosOfMine.pomodoros.completed+=1;
+                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                            break;
+                        default:
+                            break;
+                    }
+                } else{
+                    /* if localStorage[''] does have our object */
+                    let pomodorosOfMine = JSON.parse(localStorage.getItem('pomodoroOfMine'));
+                    console.log(pomodorosOfMine);
+                    switch (this.refCount) {
+                        case 2:
+                            pomodorosOfMine.pomodoros.shortBreaks+=1;
+                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                            break;
+                        case 900:
+                            pomodorosOfMine.pomodoros.longBreaks+=1;
+                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                            break;
+                        case 1500:
+                            pomodorosOfMine.pomodoros.completed+=1;
+                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+
+                /* location.reload(); */
 
             }, 3500);
         }
@@ -112,12 +172,15 @@ export default {
                             if(this.count === 0){
                                 this.done=true;
                                 this.interrupting=false;
-                                mybtn.innerHTML ="Let's count that one in.";
+                                console.log(mybtn.children[0].children[0]);
+                                /*  */
                                 setTimeout(() => {
-                                    mybtn.innerHTML  += '.';
+                                    mybtn.children[0].children[0].innerHTML  += '.';
+                                    console.log(mybtn.children[0].children[0]);
                                 }, 750);
                                 setTimeout(() => {
-                                    mybtn.innerHTML  += '.';
+                                    mybtn.children[0].children[0].innerHTML  += '.';
+                                    console.log(mybtn.children[0].children[0]);
                                 }, 1500);
                                 setTimeout(()=>{
                                     /* Reseting */

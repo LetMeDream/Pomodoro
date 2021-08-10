@@ -1,8 +1,17 @@
 <template>
     <p class="panel-tabs">
-        <a v-on:click='change' class="is-active">Pomodoro</a>
-        <a v-on:click='change'>Short Break</a>
-        <a v-on:click='change'>Long Break</a>
+        <a v-on:click='change' class="is-active">Pomodoro
+                    <span id='first-tag' class='tag'>0</span>
+        </a>
+
+        <a v-on:click='change'>Short Break
+                    <span id='second-tag' class='tag'>0</span>
+        </a>
+
+        <a v-on:click='change'>Long Break
+                    <span id='third-tag' class='tag'>0</span>
+        </a>
+
     </p>
 </template>
 
@@ -11,6 +20,15 @@
 
 export default {
     name: 'controlPanel',
+    data(){
+        return{
+            pomodoros: {
+                completed: 0,
+                shortBreaks: 0,
+                longBreaks: 0
+            }
+        }
+    },
     props:{
         'currentColor': Function,
         'currentCount': Function,
@@ -19,8 +37,26 @@ export default {
 
     },
     methods:{
-        change(e){
+        updateTag(){
+            let object = localStorage.getItem('pomodoroOfMine') ? JSON.parse(localStorage.getItem('pomodoroOfMine')).pomodoros : this.pomodoros;
+            /* console.log(object); */ // Why the fuck does this output 'observer'?
+            if(object){
+                this.pomodoros.completed = object.completed;
+                this.pomodoros.shortBreaks = object.shortBreaks;
+                this.pomodoros.longBreaks = object.longBreaks;
+            }
 
+            /* Get elements */
+            let tag1 = document.getElementById('first-tag');
+            let tag2 = document.getElementById('second-tag');
+            let tag3 = document.getElementById('third-tag');
+            tag1.innerHTML = object.completed;
+            tag2.innerHTML = object.shortBreaks;
+            tag3.innerHTML = object.longBreaks;
+
+
+        },
+        change(e){
             /* Here I think we should do the 'interrupting' check
             ** If not interrupting... */
             if(!this.interrupting){
@@ -35,7 +71,7 @@ export default {
                 e.target.classList.toggle('is-active');
 
                 /* Now picking a color */
-                let currentTab = e.target.innerHTML;
+                let currentTab = e.target.childNodes[0].nodeValue.trim();
                 switch (currentTab) {
                     case 'Pomodoro':
                         this.currentColor('#3A4750');
@@ -65,7 +101,7 @@ export default {
                     this.changedStop();
 
                     /* Now picking a color */
-                    let currentTab = e.target.innerHTML;
+                    let currentTab = e.target.childNodes[0].nodeValue.trim();
                     switch (currentTab) {
                         case 'Pomodoro':
                             this.currentColor('#3A4750');
@@ -85,10 +121,13 @@ export default {
                 }
             }
 
-
+            this.updateTag();
 
 
         }
+    },
+    mounted(){
+        this.updateTag();
     }
 }
 </script>
@@ -100,6 +139,14 @@ export default {
         color:white;
         height: 700;
         font-size: 1.2em;
+    }
+    .panel-tabs{
+        align-items: center;
+    }
+    .tag{
+        position:relative;
+        top:-2px;
+        pointer-events: none;
     }
 
 </style>
