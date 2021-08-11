@@ -1,217 +1,231 @@
 <template>
 
-    <div class="container-mine">
+    <div class="outter-container">
+        <div class="container-mine">
 
-        <control-panel :changedStop='changedStop' :interrupting="interrupting" :count='refCount' :currentColor='currentColor' :currentCount='currentCount' ></control-panel>
+            <control-panel :changedStop='changedStop' :interrupting="interrupting" :count='refCount' :currentColor='currentColor' :currentCount='currentCount' ></control-panel>
 
-        <div class="countdown-container">
-            <div class="countdown">
-                {{ minutes }}:<span v-if='seconds<10'>0</span>{{seconds}}
+            <div class="countdown-container">
+                <div class="countdown">
+                    {{ minutes }}:<span v-if='seconds<10'>0</span>{{seconds}}
+                </div>
             </div>
+
+            <button @click='startCount' id='firstBtn' class="button is-rounded is-dark is-medium myBtn">
+                <div v-if='!done' class="aint-done">
+                    <p v-if='counting && (count!=refCount)'>Stop</p>
+                    <p v-else-if='count!=refCount'>Continue</p>
+                    <p v-else>Start</p>
+                </div>
+                <div v-else class="aint-done">
+                    <p>Let's count that one in.</p>
+                </div>
+            </button>
+
         </div>
 
-        <button @click='startCount' id='firstBtn' class="button is-rounded is-dark is-medium myBtn">
-            <div v-if='!done' class="aint-done">
-                <p v-if='counting && (count!=refCount)'>Stop</p>
-                <p v-else-if='count!=refCount'>Continue</p>
-                <p v-else>Start</p>
-            </div>
-            <div v-else class="aint-done">
-                <p>Let's count that one in.</p>
-            </div>
-        </button>
-
-
-
+        <div class="messageOfMine">
+            {{ refCount == 1500 ? 'Time to work!' : 'Time for a break!' }}
+        </div>
 
     </div>
+
+
 
 
 </template>
 
 <script>
-import ControlPanel from './controlPanel.vue'
+    import ControlPanel from './controlPanel.vue'
 
 
 
-export default {
-    name: 'timerContainer',
-    components:{
-        ControlPanel
-    },
-    props:{
-        'currentColor': Function
-    },
-    data() {
-        return {
-            count: 1500,
-            refCount: 1500,
-            counting: false,
-            done:false,
-            /* Just to know if we are INTERRUPTING an already started countdown by changing Tabs*/
-            interrupting:false
-        }
-    },
-    computed:{
-        minutes:function(){
-            return Math.floor(this.count/60)
+    export default {
+        name: 'timerContainer',
+        components:{
+            ControlPanel
         },
-        seconds:function(){
-            return Math.floor((this.count)%60)
+        props:{
+            'currentColor': Function
         },
-        colorButton:function(){
-            if(!this.interrupting){
-                if(this.count=='1'){
-                    return 2;
-                }
+        data() {
+            return {
+                count: 1500,
+                refCount: 1500,
+                counting: false,
+                done:false,
+                /* Just to know if we are INTERRUPTING an already started countdown by changing Tabs*/
+                interrupting:false
             }
-            return 1;
-        }
-
-    },
-    watch:{
-        done:function(){
-            setTimeout(() => {
-                let mybtn = document.getElementById('firstBtn');
-                mybtn.classList.remove('is-loading');
-                /* Let's here finish doing all the reseting such as...  */
-                /* console.log(mybtn);
-                console.log(mybtn.children); */
-
-                this.done = true;
-                /* Let's have localStorage save our asses here */
-                /* If localStorage[''] doesn't have our object */
-                if(!localStorage.getItem('pomodoroOfMine')){
-                    console.log('lets then create it');
-                    let object = JSON.stringify({
-                            app: 'Vue 3',
-                            pomodoros: {
-                                completed: 0,
-                                shortBreaks: 0,
-                                longBreaks: 0
-                            }
-                        });
-                    localStorage.setItem('pomodoroOfMine', object);
-                    let pomodorosOfMine = JSON.parse(localStorage.getItem('pomodoroOfMine'));
-                    console.log(pomodorosOfMine);
-                    switch (this.refCount) {
-                        case 2:
-                            pomodorosOfMine.pomodoros.shortBreaks+=1;
-                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
-                            break;
-                        case 900:
-                            pomodorosOfMine.pomodoros.longBreaks+=1;
-                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
-                            break;
-                        case 1500:
-                            pomodorosOfMine.pomodoros.completed+=1;
-                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
-                            break;
-                        default:
-                            break;
-                    }
-                } else{
-                    /* if localStorage[''] does have our object */
-                    let pomodorosOfMine = JSON.parse(localStorage.getItem('pomodoroOfMine'));
-                    console.log(pomodorosOfMine);
-                    switch (this.refCount) {
-                        case 2:
-                            pomodorosOfMine.pomodoros.shortBreaks+=1;
-                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
-                            break;
-                        case 900:
-                            pomodorosOfMine.pomodoros.longBreaks+=1;
-                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
-                            break;
-                        case 1500:
-                            pomodorosOfMine.pomodoros.completed+=1;
-                            localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
-                            break;
-                        default:
-                            break;
+        },
+        computed:{
+            minutes:function(){
+                return Math.floor(this.count/60)
+            },
+            seconds:function(){
+                return Math.floor((this.count)%60)
+            },
+            colorButton:function(){
+                if(!this.interrupting){
+                    if(this.count=='1'){
+                        return 2;
                     }
                 }
-
-
-                /* location.reload(); */
-
-            }, 3500);
-        }
-    },
-    methods: {
-        alarm(){
-            let audio = document.getElementById('thisAudio');
-            audio.play();
-        },
-        clicked(){
-            let audio = document.getElementById('thisOtherAudio');
-            audio.play();
-        },
-        /* Here we receive Count (25, 5 or 15 mins) from Child component */
-        currentCount(newCount){
-            this.refCount = newCount;
-            this.count = newCount;
-        },
-        /* This one just makes sure countdown resets AND stops whenever we change an already started countdown */
-        changedStop(){
-            this.interrupting = false;
-        },
-        /* Pretty obviously, here we start the count(down) */
-        startCount(){
-            this.clicked();
-            this.interrupting = true;
-            let mybtn = document.querySelector('.myBtn');
-            mybtn.classList.toggle('myBtnClicked')
-            !this.done ? this.counting = !this.counting : this.counting = true ;
-
-            /* Do we need a reset maybe? */
-            if(this.done){
-                this.count = this.refCount;
-                mybtn.innerHTML = 'Start';
+                return 1;
             }
 
-            if(this.count>0){
-                    let xx = setInterval(()=>
-                        {
-                            if(this.counting &&  this.count>0 && this.interrupting){
-                                this.count=this.count-1;
-                            }else{
-                                clearInterval(xx);
-                            }
-                            if(this.count === 0){
-                                this.alarm();
-                                this.done=true;
-                                this.interrupting=false;
-                                console.log(mybtn.children[0].children[0]);
-                                /*  */
-                                setTimeout(() => {
-                                    mybtn.children[0].children[0].innerHTML  += '.';
-                                    console.log(mybtn.children[0].children[0]);
-                                }, 750);
-                                setTimeout(() => {
-                                    mybtn.children[0].children[0].innerHTML  += '.';
-                                    console.log(mybtn.children[0].children[0]);
-                                }, 1500);
-                                setTimeout(()=>{
-                                    /* Reseting */
-                                    this.counting = false;
-                                    this.count = this.refCount;
-                                    mybtn.classList.add('is-loading');
-                                    /* Countdown is done */
-                                }, 2000);
-                                clearInterval(xx);
-                            }
+        },
+        watch:{
+            done:function(){
+                setTimeout(() => {
+                    let mybtn = document.getElementById('firstBtn');
+                    mybtn.classList.remove('is-loading');
+                    /* Let's here finish doing all the reseting such as...  */
+                    /* console.log(mybtn);
+                    console.log(mybtn.children); */
+
+                    this.done = true;
+                    /* Let's have localStorage save our asses here */
+                    /* If localStorage[''] doesn't have our object */
+                    if(!localStorage.getItem('pomodoroOfMine')){
+                        console.log('lets then create it');
+                        let object = JSON.stringify({
+                                app: 'Vue 3',
+                                pomodoros: {
+                                    completed: 0,
+                                    shortBreaks: 0,
+                                    longBreaks: 0
+                                }
+                            });
+                        localStorage.setItem('pomodoroOfMine', object);
+                        let pomodorosOfMine = JSON.parse(localStorage.getItem('pomodoroOfMine'));
+                        console.log(pomodorosOfMine);
+                        switch (this.refCount) {
+                            case 2:
+                                pomodorosOfMine.pomodoros.shortBreaks+=1;
+                                localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                                break;
+                            case 900:
+                                pomodorosOfMine.pomodoros.longBreaks+=1;
+                                localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                                break;
+                            case 1500:
+                                pomodorosOfMine.pomodoros.completed+=1;
+                                localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                                break;
+                            default:
+                                break;
                         }
-                    , 1000);
-            }
+                    } else{
+                        /* if localStorage[''] does have our object */
+                        let pomodorosOfMine = JSON.parse(localStorage.getItem('pomodoroOfMine'));
+                        console.log(pomodorosOfMine);
+                        switch (this.refCount) {
+                            case 2:
+                                pomodorosOfMine.pomodoros.shortBreaks+=1;
+                                localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                                break;
+                            case 900:
+                                pomodorosOfMine.pomodoros.longBreaks+=1;
+                                localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                                break;
+                            case 1500:
+                                pomodorosOfMine.pomodoros.completed+=1;
+                                localStorage.setItem('pomodoroOfMine', JSON.stringify(pomodorosOfMine));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
 
+
+                    /* location.reload(); */
+
+                }, 3500);
+            }
+        },
+        methods: {
+            alarm(){
+                let audio = document.getElementById('thisAudio');
+                audio.play();
+            },
+            clicked(){
+                let audio = document.getElementById('thisOtherAudio');
+                audio.play();
+            },
+            /* Here we receive Count (25, 5 or 15 mins) from Child component */
+            currentCount(newCount){
+                this.refCount = newCount;
+                this.count = newCount;
+            },
+            /* This one just makes sure countdown resets AND stops whenever we change an already started countdown */
+            changedStop(){
+                this.interrupting = false;
+            },
+            /* Pretty obviously, here we start the count(down) */
+            startCount(){
+                this.clicked();
+                this.interrupting = true;
+                let mybtn = document.querySelector('.myBtn');
+                mybtn.classList.toggle('myBtnClicked')
+                !this.done ? this.counting = !this.counting : this.counting = true ;
+
+                /* Do we need a reset maybe? */
+                if(this.done){
+                    this.count = this.refCount;
+                    mybtn.innerHTML = 'Start';
+                }
+
+                if(this.count>0){
+                        let xx = setInterval(()=>
+                            {
+                                if(this.counting &&  this.count>0 && this.interrupting){
+                                    this.count=this.count-1;
+                                }else{
+                                    clearInterval(xx);
+                                }
+                                if(this.count === 0){
+                                    this.alarm();
+                                    this.done=true;
+                                    this.interrupting=false;
+                                    console.log(mybtn.children[0].children[0]);
+                                    /*  */
+                                    setTimeout(() => {
+                                        mybtn.children[0].children[0].innerHTML  += '.';
+                                        console.log(mybtn.children[0].children[0]);
+                                    }, 750);
+                                    setTimeout(() => {
+                                        mybtn.children[0].children[0].innerHTML  += '.';
+                                        console.log(mybtn.children[0].children[0]);
+                                    }, 1500);
+                                    setTimeout(()=>{
+                                        /* Reseting */
+                                        this.counting = false;
+                                        this.count = this.refCount;
+                                        mybtn.classList.add('is-loading');
+                                        /* Countdown is done */
+                                    }, 2000);
+                                    clearInterval(xx);
+                                }
+                            }
+                        , 1000);
+                }
+
+            }
         }
     }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+    .messageOfMine{
+        color:white;
+        position:relative;
+        top:50px;
+        font-family: 'Playfair Display', serif;
+        font-size:1.6rem;
+    }
 
     .stop{
         background-color:#BD4B4B;

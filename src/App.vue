@@ -2,17 +2,20 @@
   <div id="app">
     <timer-container :currentColor="currentColor">
     </timer-container>
+    <task-list></task-list>
   </div>
 </template>
 
 <script>
 /* import HelloWorld from './components/HelloWorld.vue' */
 import TimerContainer from './components/timerContainer.vue'
+import TaskList from './components/taskList.vue'
 
 export default {
   name: 'App',
   components: {
-    TimerContainer
+    TimerContainer,
+    TaskList
   },
   methods: {
     currentColor(color){
@@ -34,6 +37,8 @@ export default {
 body{
   transition: 1s ease all;
   background:#3A4750;
+  /* min-height: 400px; */
+  min-height: 100vh;
 }
 
 #app {
@@ -45,7 +50,8 @@ body{
   min-height: 100vh;
 
   display:flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: space-around;
 }
 </style>
