@@ -89,7 +89,7 @@
 
                     <div :click='adding' class="task-creator p-4 m-2">
                         <i class="fas fa-plus myIcon"></i>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agregue aquí la tarea en la cual se enfocará.
+                        Add in here a new task
                     </div>
 
                 </div>
@@ -293,8 +293,8 @@
 
     .myIcon{
         position:absolute;
-        left:16px;
-        bottom:44px;
+        left:18px;
+        bottom:20px;
     }
     .containerRightie{
         width:100%;
