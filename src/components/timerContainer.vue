@@ -20,14 +20,34 @@
                 </div>
 
                 <div class="navbar-end">
-                    <div class="navbar-item">
-                        <a href="#">
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
                             <i class="fas fa-sliders-h"></i>
-                            Personalizar</a></div>
+                            Customize
+                        </a>
+                        <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            <i class="far fa-clock"></i>&nbsp;
+                            Concentration Lv.
+                        </a>
+                        <a class="navbar-item">
+                            <i class="fas fa-headphones-alt"></i>&nbsp;
+                            Background music and alarm
+                        </a>
+                        <a class="navbar-item">
+                            <i class="fas fa-redo-alt"></i>&nbsp;
+                            Autoplay
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Once upon a midnight dreary
+                        </a>
+                        </div>
+                    </div>
                     <div class="navbar-item">
-                        <a href="#">
+                        <a target="_blank" href="https://www.youtube.com/watch?v=V7CO3dYfKHs">
                         <i class="fas fa-heart"></i>
-                        ~Killmyself~</a></div>
+                        ~Kill myself~</a></div>
                 </div>
             </div>
         </nav>
@@ -67,7 +87,7 @@
                         Tasks <span class="tag">0</span>
                     </div>
 
-                    <div class="task-creator p-4 m-2">
+                    <div :click='adding' class="task-creator p-4 m-2">
                         <i class="fas fa-plus myIcon"></i>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agregue aquí la tarea en la cual se enfocará.
                     </div>
@@ -101,7 +121,9 @@
                 counting: false,
                 done:false,
                 /* Just to know if we are INTERRUPTING an already started countdown by changing Tabs*/
-                interrupting:false
+                interrupting:false,
+                /* Are we adding? */
+                addin: false
             }
         },
         computed:{
@@ -191,6 +213,10 @@
             }
         },
         methods: {
+            adding(){
+                this.addin = !this.addin;
+                console.log('sex')
+            },
             alarm(){
                 let audio = document.getElementById('thisAudio');
                 audio.play();
