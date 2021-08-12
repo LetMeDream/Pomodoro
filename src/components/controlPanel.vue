@@ -10,15 +10,15 @@
             <source src="../assets/click.mp3" type="audio/mpeg">
             <!-- Your browser does not support the audio element. -->
         </audio>
-        <a v-on:click='change' class="is-active">Pomodoro
+        <a v-on:click='change' class="is-active azulito">Pomodoro
                     <span id='first-tag' class='tag'>0</span>
         </a>
 
-        <a v-on:click='change'>Short Break
+        <a v-on:click='change' class='verdecito'>Short Break
                     <span id='second-tag' class='tag'>0</span>
         </a>
 
-        <a v-on:click='change'>Long Break
+        <a v-on:click='change' class='verdecito'>Long Break
                     <span id='third-tag' class='tag'>0</span>
         </a>
 
@@ -39,7 +39,6 @@ export default {
         }
     },
     props:{
-        'currentColor': Function,
         'currentCount': Function,
         'interrupting': Boolean,
         'changedStop': Function
@@ -83,15 +82,12 @@ export default {
                 let currentTab = e.target.childNodes[0].nodeValue.trim();
                 switch (currentTab) {
                     case 'Pomodoro':
-                        this.currentColor('#3A4750');
                         this.currentCount(1500);
                         break;
                     case 'Short Break':
-                        this.currentColor('#3F72AF');
                         this.currentCount(2);
                         break;
                     case 'Long Break':
-                        this.currentColor('#878ECD');
                         this.currentCount(900);
                         break;
                     default:
@@ -113,15 +109,12 @@ export default {
                     let currentTab = e.target.childNodes[0].nodeValue.trim();
                     switch (currentTab) {
                         case 'Pomodoro':
-                            this.currentColor('#3A4750');
                             this.currentCount(1500);
                             break;
                         case 'Short Break':
-                            this.currentColor('#3F72AF');
                             this.currentCount(2);
                             break;
                         case 'Long Break':
-                            this.currentColor('#878ECD');
                             this.currentCount(900);
                             break;
                         default:
@@ -145,9 +138,15 @@ export default {
 <style scoped>
 
     .panel-tabs a{
-        color:white;
         height: 700;
-        font-size: 1.2em;
+        font-size: 1.5em;
+        font-family: 'STIX Two Text', serif;
+    }
+    .azulito{
+        color:#2c7da0 !important;
+    }
+    .verdecito{
+        color:#52b788 !important;
     }
     .panel-tabs{
         align-items: center;

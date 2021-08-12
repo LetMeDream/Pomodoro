@@ -1,31 +1,83 @@
 <template>
 
     <div class="outter-container">
-        <div class="container-mine">
 
-            <control-panel :changedStop='changedStop' :interrupting="interrupting" :count='refCount' :currentColor='currentColor' :currentCount='currentCount' ></control-panel>
-
-            <div class="countdown-container">
-                <div class="countdown">
-                    {{ minutes }}:<span v-if='seconds<10'>0</span>{{seconds}}
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="https://bulma.io">
+                    Pomodoro timer of mine
+                </a>
+                <div class="navbar-burger" data-target="navbarExampleTransparentExample">
+                <span></span>
+                <span></span>
+                <span></span>
                 </div>
             </div>
 
-            <button @click='startCount' id='firstBtn' class="button is-rounded is-dark is-medium myBtn">
-                <div v-if='!done' class="aint-done">
-                    <p v-if='counting && (count!=refCount)'>Stop</p>
-                    <p v-else-if='count!=refCount'>Continue</p>
-                    <p v-else>Start</p>
-                </div>
-                <div v-else class="aint-done">
-                    <p>Let's count that one in.</p>
-                </div>
-            </button>
+            <div id="navbarExampleTransparentExample" class="navbar-menu">
+                <div class="navbar-start">
 
-        </div>
+                </div>
 
-        <div class="messageOfMine">
-            {{ refCount == 1500 ? 'Time to work!' : 'Time for a break!' }}
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <a href="#">
+                            <i class="fas fa-sliders-h"></i>
+                            Personalizar</a></div>
+                    <div class="navbar-item">
+                        <a href="#">
+                        <i class="fas fa-heart"></i>
+                        ~Killmyself~</a></div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-mine">
+
+            <aside class="leftie">
+                <control-panel
+                    :changedStop='changedStop'
+                    :interrupting="interrupting"
+                    :count='refCount'
+                    :currentCount='currentCount' >
+                </control-panel>
+                <div class="countdown-container" :class='{ bordeverde : refCount != 1500 }'>
+                    <div class="countdown" :class='{ verdecitx : refCount != 1500 , azulitx : refCount == 1500 }'>
+                        {{ minutes }}:<span v-if='seconds<10'>0</span>{{seconds}}
+                    </div>
+                </div>
+                <button @click='startCount' id='firstBtn' class="button is-rounded is-medium myBtn"
+                        :class='{ azulito : refCount == 1500 , verdecito : refCount != 1500}'
+                >
+                    <div v-if='!done' class="aint-done">
+                        <p v-if='counting && (count!=refCount)'>Stop</p>
+                        <p v-else-if='count!=refCount'>Continue</p>
+                        <p v-else>Start</p>
+                    </div>
+                    <div v-else class="aint-done">
+                        <p>Let's count that one in.</p>
+                    </div>
+                </button>
+            </aside>
+
+            <aside class="rightie">
+
+                <div class="containerRightie">
+                    <div class="p-2 title is-3">
+                        Tasks <span class="tag">0</span>
+                    </div>
+
+                    <div class="task-creator p-4 m-2">
+                        <i class="fas fa-plus myIcon"></i>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agregue aquí la tarea en la cual se enfocará.
+                    </div>
+
+                </div>
+
+
+            </aside>
+
+
         </div>
 
     </div>
@@ -37,16 +89,10 @@
 
 <script>
     import ControlPanel from './controlPanel.vue'
-
-
-
     export default {
         name: 'timerContainer',
         components:{
             ControlPanel
-        },
-        props:{
-            'currentColor': Function
         },
         data() {
             return {
@@ -219,14 +265,30 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-    .messageOfMine{
-        color:white;
-        position:relative;
-        top:50px;
-        font-family: 'Playfair Display', serif;
-        font-size:1.6rem;
+    .myIcon{
+        position:absolute;
+        left:16px;
+        bottom:44px;
     }
+    .containerRightie{
+        width:100%;
+    }
+    .task-creator{
+        position:relative;
+        display:flex;
+        justify-content: center;
+        border:1px dashed black;
+        border-radius: .8rem;
+        background-color:rgba(201, 201, 201,.5);
+        cursor: pointer;
+        -webkit-box-shadow: .1px .6px 6px .1px #000000;
+        box-shadow: .1px .6px 6px .1px #000000;
 
+        transition: .3s all ease;
+    }
+    .task-creator:hover{
+        transform: translateY(-1px)
+    }
     .stop{
         background-color:#BD4B4B;
     }
@@ -235,25 +297,33 @@
         background-color:#974848;
     }
 
+    .outter-container{
+        min-width: 90vw;
+    }
+    .navbar{
+        background-color:rgba(255, 254, 254, 0.877);
+    }
+
     .container-mine{
         -webkit-box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
         -moz-box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
         box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
-        background-color:rgba(208, 208, 208, 0.645);
-        border-radius:8px;
-        /* height: 210px; */
-        /* height: 30px; */
-        min-width: 25vw;
-        max-width: 50vw;
+        background-color:rgba(255, 254, 254, 0.877);
+        border-radius:0 0 8px8px;
 
         display:flex;
-        flex-direction: column;
+        height:80vh;
+
+    }
+    .leftie{
+        width:80%;
+        border-right: 1px solid black;
     }
     .container-mine button{
         align-self: center;
     }
     .countdown{
-        color:white;
+        color:rgb(96, 105, 118);
         font-size: 4.20em;
         font-family:'Desconsolata';
     }
@@ -265,6 +335,27 @@
         min-width:108px;
         box-shadow: none;
         transition: 0.1s all ease-in;
+    }
+    .azulito{
+        color:white !important;
+        background-color:#2c7da0 !important;
+        transition: .4s all ease;
+    }
+    .azulitx{
+        transition: .4s all ease;
+        color:#2c7da0 !important;
+    }
+    .verdecito{
+        color:white !important;
+        background-color:#07ae60 !important;
+    }
+    .verdecitx{
+        transition: .4s all ease;
+        color:rgb(7, 174, 96) !important;
+    }
+    .bordeverde{
+        transition: .4s all ease;
+        border:2px solid rgba(7, 174, 96, 0.645) !important;
     }
     .myBtn:focus{
         box-shadow: none;
@@ -278,6 +369,25 @@
     }
     .finished{
         color:green;
+    }
+    .leftie{
+        display:flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .rightie{
+        flex:1;
+    }
+    .countdown-container{
+        border:2px solid rgba(23, 133, 206, 0.645);
+        width:310px;
+        height: 310px;
+        border-radius: 100%;
+        align-self: center;
+
+        display:flex;
+        justify-content: center;
+        align-items: center;
     }
 
 
